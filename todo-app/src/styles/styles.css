@@ -1,0 +1,33 @@
+/* src/styles/styles.css */
+
+/* Сброс базовых отступов у списков */
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Общий стиль для всего приложения */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  margin: 0;
+  padding: 20px;
+}
+
+/* Заголовок */
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+/* Стили для задач */
+.todo-item {
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+.todo-text.completed {
+  text-decoration: line-through;
+  color: #888;
+}
