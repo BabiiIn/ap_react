@@ -1,74 +1,43 @@
-import { useState } from 'react';
-import { TodoList } from './TodoList';
-import styles from './App.module.css';
+📌 Что такое ref в React
+ref — это способ получить прямую ссылку на DOM‑элемент (например, на <input>).
+Обычно мы работаем через состояние (useState), но иногда нужно «дотронуться» до самого элемента: поставить фокус, измерить ширину, прокрутить и т.д.
+Для этого мы создаём const inputRef = useRef(null) и привязываем его к элементу через ref={inputRef}.
 
-const initial = [
-  { id: 1, text: 'Выучить React', completed: false },
-  { id: 2, text: 'Сделать todo app', completed: true },
-  { id: 3, text: 'Проверить зачёркивание', completed: true },
-];
+📌 Зачем он нужен в твоём коде
+После добавления задачи мы хотим, чтобы курсор автоматически возвращался в поле ввода.
+Если этого не сделать, пользователю придётся каждый раз вручную кликать в поле.
 
-export function App() {
-  const [todos, setTodo] = useState(initial);
+С помощью inputRef.current.focus() мы говорим браузеру: «поставь фокус обратно в этот инпут».
 
-  return (
-    <div className={styles.app}>
-      <h1 className={styles.title}>What to do</h1>
-      <TodoList todos={todos} />
-    </div>
-  );
-}
-.app {
-  max-width: 600px;
-  margin: 0 auto;
-  background: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
+📌 Как это работает пошагово
+При рендере React создаёт <input> и сохраняет ссылку на него в inputRef.current.
+Когда ты вызываешь inputRef.current.focus(), браузер ставит курсор в поле ввода.
+Пользователь может сразу печатать новую задачу, не делая лишних кликов.
 
-.title {
-  text-align: center;
-  color: #333;
-}
+🎯 Итог
+ref нужен для прямого доступа к DOM‑элементу.
+В твоём случае — чтобы автоматически возвращать фокус в поле ввода после добавления задачи.
+Это улучшает UX: приложение становится удобнее и быстрее в использовании.
 
-import { TodoItem } from './TodoItem';
-import styles from './TodoList.module.css';
+📌 Пример использования ref: прокрутка списка вниз
+Представь, что у тебя длинный список задач. Когда ты добавляешь новую задачу, удобно автоматически прокручивать список так, чтобы она была видна.
 
-export const TodoList = ({ todos = [] }) => {
-  return (
-    <div>
-      <ul className={styles.todoList}>
-        {todos.map((todo) => (
-          <TodoItem key={todo.id} todo={todo} />
-        ))}
-      </ul>
-    </div>
-  );
-};
-.todoList {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
+Как это сделать:
 
-import styles from './TodoItem.module.css';
+Создай ref для контейнера списка:
 
-export const TodoItem = ({ todo }) => {
-  return (
-    <li className={styles.todoItem}>
-      <span className={todo.completed ? styles.completed : ""}>
-        {todo.text}
-      </span>
-    </li>
-  );
-};
-.todoItem {
-  padding: 8px;
-  border-bottom: 1px solid #ddd;
-}
+js
+const listRef = useRef(null);
+Привяжи его к элементу, который оборачивает твои задачи:
 
-.completed {
-  text-decoration: line-through;
-  color: #888;
-}
+jsx
+<div ref={listRef}>
+  <TodoList todos={todos} />
+</div>
+После добавления новой задачи вызови:
+
+js
+listRef.current.scrollTop = listRef.current.scrollHeight;
+Это прокрутит контейнер вниз, показывая последнюю задачу.
+
+👉 Таким образом, ref даёт тебе прямой доступ к DOM‑элементу, чтобы управлять прокруткой.
