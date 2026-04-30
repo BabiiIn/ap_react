@@ -1,8 +1,18 @@
+import { useState } from 'react';
 import styles from './TodoItem.module.css';
 
 export const TodoItem = ({ todo, onDelete, onToggle }) => {
+  const [isRemoving, setIsRemoving] = useState(false);
+
+  const handleDeleteClick = () => {
+    setIsRemoving(true);
+    setTimeout(() => {
+      onDelete(todo.id);
+    }, 300); // время совпадает с transition в CSS
+  };
+
   return (
-    <div className={styles.todoItem}>
+    <div className={`${styles.todoItem} ${isRemoving ? styles.fadeOut : ''}`}>
       <span
         onClick={onToggle}
         className={todo.completed ? styles.completed : styles.text}
@@ -11,12 +21,15 @@ export const TodoItem = ({ todo, onDelete, onToggle }) => {
       </span>
 
       <div className={styles.actions}>
-        <button className={styles.toggleButton} onClick={() => onToggle(todo.id)}>
+        <button
+          className={styles.toggleButton}
+          onClick={() => onToggle(todo.id)}
+        >
           {todo.completed ? 'Сделать невыполненной' : 'Выполнено'}
         </button>
         <button
           className={styles.deleteButton}
-          onClick={() => onDelete(todo.id)}
+          onClick={handleDeleteClick}
           aria-label="Удалить задачу"
         >
           ✕

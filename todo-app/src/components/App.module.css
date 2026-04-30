@@ -52,8 +52,44 @@
   margin-top: 4px; /* Отступ сверху, чтобы не прилипало к инпуту */
   font-weight: 500; /* Немного выделить */
 }
+
+.filters {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 16px 0;
+}
+
+.filters button {
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+.filters button:hover {
+  background-color: #e6e6e6;
+}
+
+.filters button.active {
+  background-color: #007bff;
+  color: #fff;
+  border-color: #007bff;
+}
+
 .counter {
   margin: 12px 0;
   font-weight: 500;
   color: #444;
+  text-align: center;
 }
+
+.completedCount {
+  color: #28a745; /* зелёный для выполненных */
+  margin-left: 8px;
+  font-weight: 600;
+}
+
