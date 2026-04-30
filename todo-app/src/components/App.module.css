@@ -11,6 +11,40 @@
   text-align: center;
   color: #333;
 }
+.form {
+  margin-top: 16px;
+  display: flex;              /* элементы в строку */
+  align-items: center;        /* выравнивание по вертикали */
+  gap: 8px;   
+}
+
+.form label {
+  flex: 0 0 140px;            /* фиксированная ширина для подписи */
+  font-weight: 500;
+  color: #555;
+}
+
+.form input {
+  flex: 1;                    /* занимает всё оставшееся место */
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form button {
+  flex: 0 0 auto;             /* кнопка имеет свою ширину */
+  padding: 8px 14px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.form button:hover {
+  background-color: #0056b3;
+}
 
 .error {
   color: #d9534f; /* Красный цвет, но не слишком яркий */

@@ -3,3 +3,11 @@
   padding: 0;
   margin: 0;
 }
+
+.todoLine {
+  display: flex; /* элементы в строку */
+  align-items: center; /* выравнивание по вертикали */
+  justify-content: space-between; /* текст слева, кнопка справа */
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
