@@ -3,6 +3,7 @@ import { TodoList } from './TodoList';
 import { v4 as uuidv4 } from 'uuid';
 import styles from './App.module.css';
 import { useRef } from 'react';
+import { useEffect } from 'react';
 
 const initial = [
   { id: uuidv4(), text: 'Выучить React', completed: false },
@@ -11,7 +12,9 @@ const initial = [
 ];
 
 export function App() {
-  const [todos, setTodos] = useState(initial);
+  const savedTodos = JSON.parse(localStorage.getItem('todos')) || initial;
+
+  const [todos, setTodos] = useState(savedTodos);
   const [inputValue, setInputValue] = useState('');
   const [error, setError] = useState('');
   const inputRef = useRef(null);
@@ -54,6 +57,10 @@ export function App() {
     return true; // all
   });
   const filteredCount = filteredTodos.length;
+
+  useEffect(() => {
+    localStorage.setItem('todos', JSON.stringify(todos));
+  }, [todos]);
 
   return (
     <div className={styles.app}>

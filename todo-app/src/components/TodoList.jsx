@@ -6,9 +6,9 @@ export const TodoList = ({ todos = [], onDelete, onToggle }) => {
     <div>
       {todos.length > 0 ? (
         <ul className={styles.todoList}>
-          {todos.map((todo) => (
+          {todos.map((todo, index) => (
             <li key={todo.id} className={styles.todoLine}>
-              <TodoItem todo={todo} onDelete={onDelete} onToggle={onToggle} />
+              <TodoItem todo={todo} index={index} onDelete={onDelete} onToggle={onToggle} />
             </li>
           ))}
         </ul>
