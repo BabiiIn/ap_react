@@ -44,9 +44,16 @@ export function App() {
     );
   };
 
+  const total = todos.length;
+  const completed = todos.filter((t) => t.completed).length;
+
   return (
     <div className={styles.app}>
       <h1 className={styles.title}>What to do</h1>
+      <div className={styles.counter}>
+        Всего задач: {total}
+        <span className={styles.completedCount}>, выполнено: {completed}</span>
+      </div>
       <TodoList
         todos={todos}
         onDelete={handleDelete}
