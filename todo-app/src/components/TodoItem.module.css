@@ -63,3 +63,28 @@
     transform: translateX(0);
   }
 }
+.number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;       /* превращает квадрат в круг */
+  font-size: 14px;
+  font-weight: 600;
+  margin-right: 8px;
+  flex-shrink: 0;
+  color: #fff;              /* текст всегда белый */
+}
+
+/* Активные задачи — синий кружок */
+.numberActive {
+  background-color: #007bff;
+}
+
+/* Выполненные задачи — зелёный кружок */
+.numberCompleted {
+  background-color: #28a745;
+}
+
+

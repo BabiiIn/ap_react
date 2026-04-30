@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styles from './TodoItem.module.css';
 
-export const TodoItem = ({ todo, onDelete, onToggle }) => {
+export const TodoItem = ({ todo, index, onDelete, onToggle }) => {
   const [isRemoving, setIsRemoving] = useState(false);
 
   const handleDeleteClick = () => {
@@ -17,6 +17,13 @@ export const TodoItem = ({ todo, onDelete, onToggle }) => {
         onClick={onToggle}
         className={todo.completed ? styles.completed : styles.text}
       >
+        <span
+          className={`${styles.number} ${
+            todo.completed ? styles.numberCompleted : styles.numberActive
+          }`}
+        >
+          {index + 1}
+        </span>
         {todo.text}
       </span>
 
