@@ -1,9 +1,50 @@
 .todoItem {
-  padding: 8px;
-  border-bottom: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.text,
+.completed {
+  width: 200px; /* фиксированная ширина колонки текста */
+  text-align: left; /* текст всегда прижат к левому краю */
+  cursor: pointer;
 }
 
 .completed {
   text-decoration: line-through;
   color: #888;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.toggleButton {
+  background: none;
+  border: 1px solid #ccc;
+  padding: 4px 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.toggleButton:hover {
+  background: #f0f0f0;
+}
+
+.deleteButton {
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 16px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.deleteButton:hover {
+  color: #e74c3c;
 }

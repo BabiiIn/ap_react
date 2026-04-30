@@ -5,13 +5,12 @@ import styles from './App.module.css';
 import { useRef } from 'react';
 
 const initial = [
-  { id: 1, text: 'Выучить React', completed: false },
-  { id: 2, text: 'Сделать todo app', completed: true },
-  { id: 3, text: 'Проверить зачёркивание', completed: true },
+  { id: uuidv4(), text: 'Выучить React', completed: false },
+  { id: uuidv4(), text: 'Сделать todo app', completed: true },
+  { id: uuidv4(), text: 'Проверить зачёркивание', completed: true },
 ];
 
 export function App() {
-  // const [nextId, setNextId] = useState(4);
   const [todos, setTodos] = useState(initial);
   const [inputValue, setInputValue] = useState('');
   const [error, setError] = useState('');
@@ -23,21 +22,37 @@ export function App() {
     if (!inputValue.trim() || inputValue.length < 2) {
       setError('Введите хотя бы 2 символа');
       setInputValue('');
+      inputRef.current?.focus();
       return;
     }
 
     setTodos([...todos, { id: uuidv4(), text: inputValue, completed: false }]);
-    inputRef.current.focus();
+    inputRef.current?.focus();
     setError('');
     setInputValue('');
-    // setNextId((prev) => prev + 1);
+  };
+
+  const handleDelete = (id) => {
+    setTodos(todos.filter((todo) => todo.id !== id));
+  };
+
+  const toggleCompleted = (id) => {
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
+    );
   };
 
   return (
     <div className={styles.app}>
       <h1 className={styles.title}>What to do</h1>
-      <TodoList todos={todos} />
-      <form onSubmit={handleSubmit}>
+      <TodoList
+        todos={todos}
+        onDelete={handleDelete}
+        onToggle={toggleCompleted}
+      />
+      <form onSubmit={handleSubmit} className={styles.form}>
         <label htmlFor="todo-input">Введите новую задачу</label>
         <input
           ref={inputRef}
@@ -45,10 +60,9 @@ export function App() {
           type="text"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
-        ></input>
-
+        />
         <button>Добавить</button>
-        <div>{error && <p className={styles.error}>{error}</p>}</div>
+        {error && <p className={styles.error}>{error}</p>}
       </form>
     </div>
   );

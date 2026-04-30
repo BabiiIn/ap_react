@@ -1,43 +1,170 @@
-📌 Что такое ref в React
-ref — это способ получить прямую ссылку на DOM‑элемент (например, на <input>).
-Обычно мы работаем через состояние (useState), но иногда нужно «дотронуться» до самого элемента: поставить фокус, измерить ширину, прокрутить и т.д.
-Для этого мы создаём const inputRef = useRef(null) и привязываем его к элементу через ref={inputRef}.
+import styles from './TodoItem.module.css';
 
-📌 Зачем он нужен в твоём коде
-После добавления задачи мы хотим, чтобы курсор автоматически возвращался в поле ввода.
-Если этого не сделать, пользователю придётся каждый раз вручную кликать в поле.
+export const TodoItem = ({ todo, onDelete, onToggle }) => {
+  return (
+    <div className={styles.todoItem}>
+      <span
+        onClick={onToggle}
+        className={todo.completed ? styles.completed : styles.text}
+      >
+        {todo.text}
+      </span>
 
-С помощью inputRef.current.focus() мы говорим браузеру: «поставь фокус обратно в этот инпут».
+      <div className={styles.actions}>
+        <button className={styles.toggleButton} onClick={onToggle}>
+          {todo.completed ? 'Сделать невыполненной' : 'Выполнено'}
+        </button>
+        <button
+          className={styles.deleteButton}
+          onClick={onDelete}
+          aria-label="Удалить задачу"
+        >
+          ✕
+        </button>
+      </div>
+    </div>
+  );
+};
+import { TodoItem } from './TodoItem';
+import styles from './TodoList.module.css';
 
-📌 Как это работает пошагово
-При рендере React создаёт <input> и сохраняет ссылку на него в inputRef.current.
-Когда ты вызываешь inputRef.current.focus(), браузер ставит курсор в поле ввода.
-Пользователь может сразу печатать новую задачу, не делая лишних кликов.
+export const TodoList = ({ todos = [], onDelete, onToggle }) => {
+  return (
+    <ul className={styles.todoList}>
+      {todos.map((todo) => (
+        <li key={todo.id} className={styles.todoLine}>
+          <TodoItem
+            todo={todo}
+            onDelete={() => onDelete(todo.id)}
+            onToggle={() => onToggle(todo.id)}
+          />
+        </li>
+      ))}
+    </ul>
+  );
+};
+/todo-app/src/components/App.module.css
+.app {
+  max-width: 600px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
 
-🎯 Итог
-ref нужен для прямого доступа к DOM‑элементу.
-В твоём случае — чтобы автоматически возвращать фокус в поле ввода после добавления задачи.
-Это улучшает UX: приложение становится удобнее и быстрее в использовании.
+.title {
+  text-align: center;
+  color: #333;
+}
+.form {
+  margin-top: 16px;
+  display: flex;              /* элементы в строку */
+  align-items: center;        /* выравнивание по вертикали */
+  gap: 8px;   
+}
 
-📌 Пример использования ref: прокрутка списка вниз
-Представь, что у тебя длинный список задач. Когда ты добавляешь новую задачу, удобно автоматически прокручивать список так, чтобы она была видна.
+.form label {
+  flex: 0 0 140px;            /* фиксированная ширина для подписи */
+  font-weight: 500;
+  color: #555;
+}
 
-Как это сделать:
+.form input {
+  flex: 1;                    /* занимает всё оставшееся место */
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
 
-Создай ref для контейнера списка:
+.form button {
+  flex: 0 0 auto;             /* кнопка имеет свою ширину */
+  padding: 8px 14px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
 
-js
-const listRef = useRef(null);
-Привяжи его к элементу, который оборачивает твои задачи:
+.form button:hover {
+  background-color: #0056b3;
+}
 
-jsx
-<div ref={listRef}>
-  <TodoList todos={todos} />
-</div>
-После добавления новой задачи вызови:
+.error {
+  color: #d9534f; /* Красный цвет, но не слишком яркий */
+  font-size: 0.9rem; /* Чуть меньше основного текста */
+  margin-top: 4px; /* Отступ сверху, чтобы не прилипало к инпуту */
+  font-weight: 500; /* Немного выделить */
+}
+/todo-app/src/components/TodoItem.module.css
+.todoItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  border-bottom: 1px solid #eee;
+}
 
-js
-listRef.current.scrollTop = listRef.current.scrollHeight;
-Это прокрутит контейнер вниз, показывая последнюю задачу.
+.text,
+.completed {
+  width: 200px; /* фиксированная ширина колонки текста */
+  text-align: left; /* текст всегда прижат к левому краю */
+  cursor: pointer;
+}
 
-👉 Таким образом, ref даёт тебе прямой доступ к DOM‑элементу, чтобы управлять прокруткой.
+.completed {
+  text-decoration: line-through;
+  color: #888;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.toggleButton {
+  background: none;
+  border: 1px solid #ccc;
+  padding: 4px 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.toggleButton:hover {
+  background: #f0f0f0;
+}
+
+.deleteButton {
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 16px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.deleteButton:hover {
+  color: #e74c3c;
+}
+todo-app/src/components/TodoList.module.css
+import { TodoItem } from './TodoItem';
+import styles from './TodoList.module.css';
+
+export const TodoList = ({ todos = [], onDelete, onToggle }) => {
+  return (
+    <ul className={styles.todoList}>
+      {todos.map((todo) => (
+        <li key={todo.id} className={styles.todoLine}>
+          <TodoItem
+            todo={todo}
+            onDelete={() => onDelete(todo.id)}
+            onToggle={() => onToggle(todo.id)}
+          />
+        </li>
+      ))}
+    </ul>
+  );
+};
