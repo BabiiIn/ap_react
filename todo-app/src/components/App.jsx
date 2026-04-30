@@ -15,6 +15,7 @@ export function App() {
   const [inputValue, setInputValue] = useState('');
   const [error, setError] = useState('');
   const inputRef = useRef(null);
+  const [filter, setFilter] = useState('all');
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -47,15 +48,47 @@ export function App() {
   const total = todos.length;
   const completed = todos.filter((t) => t.completed).length;
 
+  const filteredTodos = todos.filter((todo) => {
+    if (filter === 'active') return !todo.completed;
+    if (filter === 'completed') return todo.completed;
+    return true; // all
+  });
+  const filteredCount = filteredTodos.length;
+
   return (
     <div className={styles.app}>
       <h1 className={styles.title}>What to do</h1>
+      <div className={styles.filters}>
+        <button
+          className={filter === 'all' ? styles.active : ''}
+          onClick={() => setFilter('all')}
+        >
+          Все
+        </button>
+        <button
+          className={filter === 'active' ? styles.active : ''}
+          onClick={() => setFilter('active')}
+        >
+          Активные
+        </button>
+        <button
+          className={filter === 'completed' ? styles.active : ''}
+          onClick={() => setFilter('completed')}
+        >
+          Выполненные
+        </button>
+      </div>
+
       <div className={styles.counter}>
-        Всего задач: {total}
-        <span className={styles.completedCount}>, выполнено: {completed}</span>
+        Всего задач: {filteredCount}
+        {filter === 'all' && (
+          <span className={styles.completedCount}>
+            , выполнено: {completed}
+          </span>
+        )}
       </div>
       <TodoList
-        todos={todos}
+        todos={filteredTodos}
         onDelete={handleDelete}
         onToggle={toggleCompleted}
       />
